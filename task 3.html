@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Order</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 480px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+    }
+
+    select, input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #219653;
+    }
+
+    #result {
+      margin-top: 25px;
+      padding: 14px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 500;
+      min-height: 24px;
+    }
+
+    .success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Order Product</h1>
+
+  <div class="form-container">
+    <form id="orderForm">
+      <div class="form-group">
+        <label for="product">Select Product</label>
+        <select id="product">
+          <option value="">-- Choose a product --</option>
+          <option value="Phone">Phone</option>
+          <option value="Laptop">Laptop</option>
+          <option value="Headset">Headset</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" min="1" value="1">
+      </div>
+
+      <button type="submit">Place Order</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    const resultDiv = document.getElementById('result');
+
+    function showMessage(text, type) {
+      resultDiv.textContent = text;
+      resultDiv.className = type; // success or error
+    }
+
+    function clearMessage() {
+      resultDiv.textContent = '';
+      resultDiv.className = '';
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearMessage();
+
+      const product = document.getElementById('product').value;
+      const quantity = Number(document.getElementById('quantity').value);
+
+      // Validation
+      if (product === '') {
+        showMessage("Please select a product", "error");
+        return;
+      }
+
+      if (quantity <= 0 || isNaN(quantity)) {
+        showMessage("Quantity must be at least 1", "error");
+        return;
+      }
+
+      // Success
+      showMessage(
+        `You ordered ${quantity} \( {product} \){quantity > 1 ? 's' : ''} successfully!`,
+        "success"
+      );
+
+      // Optional: reset form after success
+      // form.reset();
+      // document.getElementById('quantity').value = 1;
+    });
+  </script>
+
+</body>
+</html>

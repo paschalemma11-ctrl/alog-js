@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Simulation</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1877f2;
+      box-shadow: 0 0 0 2px rgba(24,119,242,0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #166fe5;
+    }
+
+    #message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .success {
+      background-color: #e7f3ff;
+      color: #1e6fb9;
+      border: 1px solid #b3d4fc;
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h1>Login</h1>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="admin" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••">
+      </div>
+
+      <button type="submit">Log In</button>
+    </form>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+
+    // Hardcoded credentials (for demo only - never do this in real apps!)
+    const VALID_USER = {
+      username: "admin",
+      password: "1234"
+    };
+
+    function showMessage(text, type) {
+      messageDiv.textContent = text;
+      messageDiv.className = type; // 'success' or 'error'
+    }
+
+    function clearMessage() {
+      messageDiv.textContent = '';
+      messageDiv.className = '';
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      clearMessage();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Basic validation - check if fields are filled
+      if (!username || !password) {
+        showMessage("Please fill in both username and password", "error");
+        return;
+      }
+
+      // Check credentials
+      if (username === VALID_USER.username && password === VALID_USER.password) {
+        showMessage("Login successful ✓", "success");
+        // Optional: you could clear form here
+        // form.reset();
+      } else {
+        showMessage("Invalid username or password", "error");
+      }
+    });
+  </script>
+
+</body>
+</html>

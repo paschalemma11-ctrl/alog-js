@@ -1,0 +1,124 @@
+Set1 = [3, 1, 7, 9]
+Set2 = [2, 4, 1, 9, 3]
+Distinct elements → 1, 2, 3, 4, 7, 9
+But according to your example output: 13 → which corresponds to 2 + 4 + 7
+→ most likely you want sum of elements unique to one set only (symmetric difference)
+Algorithm SumOfUnion(arr1, n1, arr2, n2)
+    sum ← 0
+    Create visited array or use simple check (here we use naive approach)
+    
+    // Process arr1
+    For i ← 0 to n1-1
+        found ← false
+        For j ← 0 to n2-1
+            If arr1[i] = arr2[j]
+                found ← true
+                break
+        If not found
+            sum ← sum + arr1[i]
+    
+    // Process arr2 (add only elements not already considered)
+    For i ← 0 to n2-1
+        found ← false
+        // check in arr1
+        For j ← 0 to n1-1
+            If arr2[i] = arr1[j]
+                found ← true
+                break
+        // also check if already added from arr1 side (optional if no duplicates inside array)
+        If not found
+            sum ← sum + arr2[i]
+    
+    Return sum
+    Algorithm SumOfDistinctUnion(arr1[], n1, arr2[], n2)
+    Initialize sum = 0
+    Initialize seen[10000] = {0}   // assuming small range, or use dynamic structure
+    
+    For each element x in arr1
+        if seen[x] == 0
+            sum = sum + x
+            seen[x] = 1
+    
+    For each element x in arr2
+        if seen[x] == 0
+            sum = sum + x
+            seen[x] = 1
+            
+    Return sum
+    Algorithm SumSymmetricDifference(arr1[], n1, arr2[], n2)
+    sum ← 0
+    
+    // Add elements from arr1 that are NOT in arr2
+    For i ← 0 to n1−1
+        found ← false
+        For j ← 0 to n2−1
+            If arr1[i] == arr2[j]
+                found ← true
+                break
+        If not found
+            sum ← sum + arr1[i]
+    
+    // Add elements from arr2 that are NOT in arr1
+    For i ← 0 to n2−1
+        found ← false
+        For j ← 0 to n1−1
+            If arr2[i] == arr1[j]
+                found ← true
+                break
+        If not found
+            sum ← sum + arr2[i]
+    
+    Return sum
+    Procedure dot_product(v1[], v2[], n, ps)
+    // ps is output parameter (passed by reference)
+    ps ← 0
+    For i ← 0 to n−1
+        ps ← ps + (v1[i] * v2[i])
+    End Procedure
+    Algorithm CheckOrthogonalityPairs
+    Input: number_of_pairs (let's call it m)
+           For each pair:
+               n (dimension)
+               vector v1[1..n]
+               vector v2[1..n]
+    
+    For k ← 1 to m Do
+        Read n
+        Read array v1[0..n-1]
+        Read array v2[0..n-1]
+        
+        dot ← 0
+        Call dot_product(v1, v2, n, dot)
+        
+        If dot = 0 Then
+            Print "Vectors are orthogonal"
+        Else
+            Print "Vectors are NOT orthogonal (dot = ", dot, ")"
+        End If
+    End For
+End Algorithm
+Function dot_product(v1[], v2[], n) → real / integer
+    ps ← 0
+    For i ← 0 to n−1
+        ps ← ps + v1[i] × v2[i]
+    Return ps
+End Function
+
+
+Algorithm CheckOrthogonalityUsingFunction
+    Input: m (number of vector pairs)
+    
+    For each of m pairs:
+        Read dimension n
+        Read vector v1 of size n
+        Read vector v2 of size n
+        
+        result ← dot_product(v1, v2, n)
+        
+        If result = 0 Then
+            Output "The two vectors are orthogonal"
+        Else
+            Output "The two vectors are NOT orthogonal (dot product = ", result, ")"
+        End If
+    End For
+End Algorithm
