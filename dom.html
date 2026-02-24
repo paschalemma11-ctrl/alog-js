@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Heart like button states */
+.like-btn {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url('heart-empty.svg') no-repeat center / contain;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.like-btn.is-active {
+  background: url('heart-filled.svg') no-repeat center / contain;
+  /* or use color filter / background-color change */
+  filter: brightness(0) saturate(100%) invert(24%) sepia(94%) saturate(7493%) hue-rotate(358deg) brightness(98%) contrast(109%);
+  transform: scale(1.15);
+}
+
+/* Optional: disabled minus when qty = 1 */
+.minus-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Make sure quantity input looks good */
+.quantity input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+    </style>
+</head>
+<body>
+    <!-- Example structure per item (repeat for each product) -->
+<div class="item">
+  <div class="buttons">
+    <span class="delete-btn"></span>
+    <span class="like-btn"></span>
+  </div>
+  
+  <div class="image">
+    <img src="plus-btn" alt="-">
+  </div>
+  
+  <div class="description">
+    <span>Product Name</span>
+    <span>Some details</span>
+  </div>
+  
+  <div class="quantity">
+    <button class="plus-btn" type="button">
+      <img src="plus.svg" alt="+">
+    </button>
+    <input type="text" name="quantity" value="1" readonly>
+    <button class="minus-btn" type="button">
+      <img src="minus.svg" alt="-">
+    </button>
+  </div>
+  
+  <div class="total-price">$549.00</div>   <!-- unit price × quantity -->
+</div>
+
+<!-- Somewhere in the page – total summary -->
+<div class="cart-total">
+  Total: <span id="cart-total">$0.00</span>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Cache important elements
+  const cartItemsContainer = document.querySelector('.shopping-cart') || document.body;
+  const totalElement = document.getElementById('cart-total') || document.querySelector('.cart-total span');
+  
+  // Helper: format price
+  function formatPrice(num) {
+    return '$' + num.toFixed(2);
+  }
+
+  // Update total price of the whole cart
+  function updateCartTotal() {
+    let total = 0;
+    const items = cartItemsContainer.querySelectorAll('.item');
+    
+    items.forEach(item => {
+      const quantityInput = item.querySelector('.quantity input');
+      const priceElement = item.querySelector('.total-price');
+      
+      if (!quantityInput || !priceElement) return;
+      
+      const quantity = parseInt(quantityInput.value) || 0;
+      // Extract unit price from the total-price field (assuming it shows unit price initially)
+      // If your HTML shows unit price in a separate element, adjust selector
+      const unitPriceText = priceElement.textContent.replace('$', '').trim();
+      const unitPrice = parseFloat(unitPriceText) || 0;
+      
+      const itemTotal = unitPrice * quantity;
+      priceElement.textContent = formatPrice(itemTotal);
+      total += itemTotal;
+    });
+    
+    if (totalElement) {
+      totalElement.textContent = formatPrice(total);
+    }
+  }
+
+  // Handle quantity change
+  function handleQuantityChange(btn, change) {
+    const item = btn.closest('.item');
+    if (!item) return;
+    
+    const input = item.querySelector('.quantity input');
+    if (!input) return;
+    
+    let qty = parseInt(input.value) || 1;
+    qty = Math.max(1, qty + change);  // minimum 1
+    input.value = qty;
+    
+    updateCartTotal();
+  }
+
+  // Delete item
+  function deleteItem(btn) {
+    const item = btn.closest('.item');
+    if (item) {
+      item.remove();
+      updateCartTotal();
+    }
+  }
+
+  // Toggle like / heart
+  function toggleLike(btn) {
+    btn.classList.toggle('is-active');
+    // Optional: change icon / color via CSS class
+  }
+
+  // Attach event listeners
+  cartItemsContainer.addEventListener('click', (e) => {
+    const target = e.target;
+
+    // Plus button
+    if (target.closest('.plus-btn') || target.parentElement?.closest('.plus-btn')) {
+      const btn = target.closest('.plus-btn') || target.parentElement?.closest('.plus-btn');
+      handleQuantityChange(btn, +1);
+    }
+
+    // Minus button
+    if (target.closest('.minus-btn') || target.parentElement?.closest('.minus-btn')) {
+      const btn = target.closest('.minus-btn') || target.parentElement?.closest('.minus-btn');
+      handleQuantityChange(btn, -1);
+    }
+
+    // Delete button
+    if (target.closest('.delete-btn') || target.classList.contains('delete-btn')) {
+      const btn = target.closest('.delete-btn') || target;
+      deleteItem(btn);
+    }
+
+    // Like / heart button
+    if (target.closest('.like-btn') || target.classList.contains('like-btn')) {
+      const btn = target.closest('.like-btn') || target;
+      toggleLike(btn);
+    }
+  });
+
+  // Initial total calculation
+  updateCartTotal();
+});
+</script>
+</body>
+</html>
