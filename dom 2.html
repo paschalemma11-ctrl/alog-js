@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Changer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Color Changer</h1>
+    
+    <div id="color-box"></div>
+    
+    <button id="change-color-btn">Change Color</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  // Select elements
+  const colorBox = document.getElementById('color-box');
+  const changeBtn = document.getElementById('change-color-btn');
+
+  // Function to generate random hex color
+  function getRandomColor() {
+    // Method 1: using toString(16) – most common
+    const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    return randomColor;
+
+    // Alternative methods (you can use any one):
+
+    // Method 2: RGB
+    // const r = Math.floor(Math.random() * 256);
+    // const g = Math.floor(Math.random() * 256);
+    // const b = Math.floor(Math.random() * 256);
+    // return `rgb(${r}, ${g}, ${b})`;
+
+    // Method 3: HSL (more pastel colors)
+    // const h = Math.floor(Math.random() * 360);
+    // return `hsl(${h}, 70%, 60%)`;
+  }
+
+  // Change color when button is clicked
+  changeBtn.addEventListener('click', () => {
+    const newColor = getRandomColor();
+    colorBox.style.backgroundColor = newColor;
+    
+    // Optional: show the color code
+    // colorBox.textContent = newColor;
+    // colorBox.style.color = '#fff';
+    // colorBox.style.display = 'flex';
+    // colorBox.style.alignItems = 'center';
+    // colorBox.style.justifyContent = 'center';
+    // colorBox.style.fontSize = '1.6rem';
+    // colorBox.style.fontWeight = 'bold';
+  });
+});
+</script>
+</html>
+</body>
+</html>
